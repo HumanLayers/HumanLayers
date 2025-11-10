@@ -141,14 +141,8 @@
     }
 
     @keyframes slideIn {
-      from {
-        opacity: 0;
-        transform: translateY(-10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .loading-spinner {
@@ -215,14 +209,6 @@
           <circle cx="85" cy="90" r="5" fill="white"/>
           <circle cx="100" cy="90" r="5" fill="white"/>
           <circle cx="115" cy="90" r="5" fill="white"/>
-          <line x1="100" y1="70" x2="85" y2="50" stroke="white" stroke-width="3"/>
-          <line x1="100" y1="70" x2="100" y2="50" stroke="white" stroke-width="3"/>
-          <line x1="100" y1="70" x2="115" y2="50" stroke="white" stroke-width="3"/>
-          <line x1="100" y1="70" x2="75" y2="70" stroke="white" stroke-width="3"/>
-          <line x1="100" y1="70" x2="125" y2="70" stroke="white" stroke-width="3"/>
-          <line x1="100" y1="70" x2="85" y2="90" stroke="white" stroke-width="3"/>
-          <line x1="100" y1="70" x2="100" y2="90" stroke="white" stroke-width="3"/>
-          <line x1="100" y1="70" x2="115" y2="90" stroke="white" stroke-width="3"/>
         </svg>
         <div class="header-logo-text">
           <span class="human">HUMAN</span><span class="layers">LAYERS</span>
@@ -230,18 +216,14 @@
       </a>
       <nav class="space-x-6 text-xs uppercase font-light tracking-wider">
         <a href="index.html" class="nav-link hover:text-green-400 transition-colors">Home</a>
-        <a href="about.html" class="nav-link hover:text-green-400 transition-colors">About</a>
+        <a href="aboutus.html" class="nav-link hover:text-green-400 transition-colors">About</a>
         <a href="prompt.html" class="nav-link hover:text-green-400 transition-colors text-green-400">Prompt Lab</a>
-        <a href="#" class="nav-link hover:text-green-400 transition-colors">Portfolio</a>
-        <a href="#" class="nav-link hover:text-green-400 transition-colors">Contact</a>
       </nav>
     </div>
   </header>
 
   <main class="flex-grow pt-24 pb-12">
     <div class="max-w-5xl mx-auto px-6">
-      
-      <!-- Hero Section -->
       <div class="text-center mb-12">
         <h1 class="text-5xl font-orbitron font-bold text-green-400 mb-4">PROMPT LAB</h1>
         <p class="text-xl text-gray-300 font-space max-w-2xl mx-auto">
@@ -249,202 +231,152 @@
         </p>
       </div>
 
-      <!-- Input Section -->
       <div class="prompt-container mb-8">
         <div class="mb-6">
           <label class="block text-sm font-orbitron text-green-400 mb-2 uppercase tracking-wider">Your Original Prompt</label>
-          <textarea id="original-prompt" class="input-field textarea-field" placeholder="Enter your prompt here... (e.g., 'Write a blog post about AI')"></textarea>
+          <textarea id="original-prompt" class="input-field textarea-field" placeholder="Enter your prompt here..."></textarea>
         </div>
 
         <div class="mb-6">
           <label class="block text-sm font-orbitron text-green-400 mb-2 uppercase tracking-wider">Use Case (Optional)</label>
           <select id="use-case" class="input-field">
-            <option value="">Select a use case...</option>
+            <option value="">Select...</option>
             <option value="content">Content Creation</option>
             <option value="coding">Code Generation</option>
             <option value="analysis">Data Analysis</option>
             <option value="creative">Creative Writing</option>
-            <option value="research">Research</option>
-            <option value="customer">Customer Service</option>
-            <option value="marketing">Marketing</option>
-            <option value="education">Education</option>
-            <option value="other">Other</option>
           </select>
         </div>
 
         <div class="mb-6">
-          <label class="block text-sm font-orbitron text-green-400 mb-2 uppercase tracking-wider">Target AI Model (Optional)</label>
+          <label class="block text-sm font-orbitron text-green-400 mb-2 uppercase tracking-wider">Target AI Model</label>
           <select id="ai-model" class="input-field">
-            <option value="">Select a model...</option>
-            <option value="gpt4">GPT-4</option>
-            <option value="claude">Claude</option>
             <option value="gemini">Gemini</option>
-            <option value="llama">Llama</option>
-            <option value="general">General Purpose</option>
           </select>
         </div>
 
-        <button id="optimize-btn" class="optimize-button w-full">
-          OPTIMIZE MY PROMPT
-        </button>
+        <button id="optimize-btn" class="optimize-button w-full">OPTIMIZE MY PROMPT</button>
       </div>
 
-      <!-- Loading State -->
       <div id="loading" class="hidden">
         <div class="loading-spinner"></div>
         <p class="text-center text-green-400 font-orbitron">Optimizing your prompt...</p>
       </div>
 
-      <!-- Results Section -->
       <div id="results" class="hidden">
         <div class="comparison-grid">
-          <!-- Original Prompt -->
           <div class="result-box">
-            <div class="flex justify-between items-center mb-3">
-              <h3 class="font-orbitron font-bold text-gray-400 uppercase text-sm">Original</h3>
-              <button class="copy-button" onclick="copyToClipboard('original-result')">Copy</button>
-            </div>
-            <div id="original-result" class="text-gray-300 font-space leading-relaxed"></div>
+            <h3 class="font-orbitron font-bold text-gray-400 uppercase text-sm">Original</h3>
+            <div id="original-result" class="text-gray-300 font-space"></div>
           </div>
-
-          <!-- Optimized Prompt -->
           <div class="result-box">
-            <div class="flex justify-between items-center mb-3">
-              <h3 class="font-orbitron font-bold text-green-400 uppercase text-sm">Optimized</h3>
-              <button class="copy-button" onclick="copyToClipboard('optimized-result')">Copy</button>
-            </div>
-            <div id="optimized-result" class="text-white font-space leading-relaxed"></div>
+            <h3 class="font-orbitron font-bold text-green-400 uppercase text-sm">Optimized</h3>
+            <div id="optimized-result" class="text-white font-space"></div>
           </div>
         </div>
-
-        <!-- Improvements -->
         <div class="result-box mt-4">
           <h3 class="font-orbitron font-bold text-green-400 mb-3 uppercase text-sm">Key Improvements</h3>
           <ul id="improvements-list" class="space-y-2 text-gray-300"></ul>
         </div>
-
-        <!-- Tips -->
         <div class="result-box mt-4">
           <h3 class="font-orbitron font-bold text-green-400 mb-3 uppercase text-sm">💡 Pro Tips</h3>
           <div id="tips-list" class="text-gray-300 space-y-2"></div>
         </div>
       </div>
-
     </div>
   </main>
 
-  <footer class="w-full bg-black/60 backdrop-blur text-center py-4 text-sm text-gray-400 z-30 border-t border-green-500/20">
+  <footer class="w-full bg-black/60 backdrop-blur text-center py-4 text-sm text-gray-400 border-t border-green-500/20">
     <div class="font-orbitron text-xs tracking-wider">
-      ENGINEERED WITH PRECISION BY <span class="text-green-400 font-bold">HUMANLAYERS</span>
+      ENGINEERED BY <span class="text-green-400 font-bold">HUMANLAYERS</span>
     </div>
-    <span class="text-xs text-gray-500 mt-1 block">Trademark &trade; HumanLayers 2024. All rights reserved.</span>
   </footer>
 
   <script>
-    const optimizeBtn = document.getElementById('optimize-btn');
-    const originalPrompt = document.getElementById('original-prompt');
-    const loading = document.getElementById('loading');
-    const results = document.getElementById('results');
+    const optimizeBtn = document.getElementById("optimize-btn");
+    const originalPrompt = document.getElementById("original-prompt");
+    const loading = document.getElementById("loading");
+    const results = document.getElementById("results");
 
-    optimizeBtn.addEventListener('click', async () => {
+    optimizeBtn.addEventListener("click", async () => {
       const prompt = originalPrompt.value.trim();
-      const useCase = document.getElementById('use-case').value;
-      const aiModel = document.getElementById('ai-model').value;
+      const useCase = document.getElementById("use-case").value;
+      const aiModel = document.getElementById("ai-model").value;
 
       if (!prompt) {
-        alert('Please enter a prompt to optimize!');
+        alert("Please enter a prompt to optimize!");
         return;
       }
 
-      // Show loading
-      loading.classList.remove('hidden');
-      results.classList.add('hidden');
+      loading.classList.remove("hidden");
+      results.classList.add("hidden");
       optimizeBtn.disabled = true;
 
       try {
-        // Call Claude API to optimize the prompt
-        const response = await fetch('https://api.anthropic.com/v1/messages', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            model: 'claude-sonnet-4-20250514',
-            max_tokens: 1000,
-            messages: [{
-              role: 'user',
-              content: `You are a prompt engineering expert. Optimize this prompt for better AI responses:
+        const response = await fetch(
+          "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=AIzaSyCAUrGpouxvhZpjz6okI3mqiBNH46_DJNE",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              contents: [
+                {
+                  parts: [
+                    {
+                      text: `You are a prompt engineering expert. Optimize this prompt for better AI responses:
 
 Original Prompt: "${prompt}"
-${useCase ? `Use Case: ${useCase}` : ''}
-${aiModel ? `Target Model: ${aiModel}` : ''}
+${useCase ? `Use Case: ${useCase}` : ""}
+${aiModel ? `Target Model: ${aiModel}` : ""}
 
 Provide:
-1. An optimized version of the prompt
-2. A list of 3-5 specific improvements made
-3. 2-3 pro tips for this type of prompt
+1. Optimized version of the prompt
+2. 3–5 specific improvements made
+3. 2–3 pro tips
 
-Format your response as JSON:
+Format response as JSON:
 {
-  "optimized": "the improved prompt",
-  "improvements": ["improvement 1", "improvement 2", ...],
-  "tips": ["tip 1", "tip 2", ...]
-}`
-            }]
-          })
-        });
+  "optimized": "",
+  "improvements": [],
+  "tips": []
+}`,
+                    },
+                  ],
+                },
+              ],
+            }),
+          }
+        );
 
         const data = await response.json();
-        const content = data.content[0].text;
-        
-        // Parse the JSON response
+        const content = data.candidates?.[0]?.content?.parts?.[0]?.text;
         const jsonMatch = content.match(/\{[\s\S]*\}/);
         if (jsonMatch) {
           const result = JSON.parse(jsonMatch[0]);
           displayResults(prompt, result);
         } else {
-          throw new Error('Invalid response format');
+          throw new Error("Invalid response format");
         }
-
       } catch (error) {
-        console.error('Error:', error);
-        alert('An error occurred while optimizing your prompt. Please try again.');
+        console.error("Error:", error);
+        alert("An error occurred while optimizing your prompt.");
       } finally {
-        loading.classList.add('hidden');
+        loading.classList.add("hidden");
         optimizeBtn.disabled = false;
       }
     });
 
     function displayResults(original, result) {
-      document.getElementById('original-result').textContent = original;
-      document.getElementById('optimized-result').textContent = result.optimized;
-
-      const improvementsList = document.getElementById('improvements-list');
-      improvementsList.innerHTML = result.improvements
-        .map(imp => `<li class="flex items-start"><span class="text-green-400 mr-2">✓</span>${imp}</li>`)
-        .join('');
-
-      const tipsList = document.getElementById('tips-list');
-      tipsList.innerHTML = result.tips
-        .map(tip => `<p class="mb-2">${tip}</p>`)
-        .join('');
-
-      results.classList.remove('hidden');
-      results.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }
-
-    function copyToClipboard(elementId) {
-      const text = document.getElementById(elementId).textContent;
-      navigator.clipboard.writeText(text).then(() => {
-        const btn = event.target;
-        const originalText = btn.textContent;
-        btn.textContent = 'Copied!';
-        setTimeout(() => {
-          btn.textContent = originalText;
-        }, 2000);
-      });
+      document.getElementById("original-result").textContent = original;
+      document.getElementById("optimized-result").textContent = result.optimized;
+      document.getElementById("improvements-list").innerHTML = result.improvements
+        .map((imp) => `<li>✓ ${imp}</li>`)
+        .join("");
+      document.getElementById("tips-list").innerHTML = result.tips
+        .map((tip) => `<p>${tip}</p>`)
+        .join("");
+      results.classList.remove("hidden");
     }
   </script>
-
 </body>
 </html>
