@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Prompt Lab - HumanLayers</title>
+  <title>HumanLayers</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,11 +14,87 @@
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      overflow-x: hidden;
+      overflow-x: hidden; 
+      overflow-y: auto;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
       background-color: #000000;
+    }
+
+    #intro-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background-color: #000000;
+      z-index: 50;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      transition: transform 1.5s cubic-bezier(0.83, 0, 0.17, 1);
+    }
+    #intro-overlay.hidden { 
+      transform: translateX(-100%);
+    }
+
+    .intro-logo {
+      width: 200px;
+      height: 200px;
+      transition: transform 1.5s cubic-bezier(0.83, 0, 0.17, 1), opacity 1.5s cubic-bezier(0.83, 0, 0.17, 1);
+      transform: scale(1);
+      opacity: 1;
+      filter: drop-shadow(0 0 30px rgba(74, 222, 128, 0.5));
+    }
+
+    .intro-text {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 3rem;
+      font-weight: 900;
+      color: #ffffff;
+      letter-spacing: 0.1em;
+    }
+
+    .intro-text .human {
+      font-weight: 900;
+    }
+
+    .intro-text .layers {
+      font-weight: 400;
+      letter-spacing: 0.3em;
+    }
+
+    #full-video-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -1;
+    }
+
+    #full-video-background video {
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      object-fit: cover;
+    }
+
+    #full-video-background .overlay {
+      position: absolute;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+
+    .text-shadow-strong {
+      text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8);
     }
 
     .font-orbitron { font-family: 'Orbitron', sans-serif; }
@@ -73,133 +149,47 @@
       font-weight: 400;
       letter-spacing: 0.15em;
     }
-
-    .prompt-container {
-      background: linear-gradient(135deg, rgba(74, 222, 128, 0.05) 0%, rgba(0, 0, 0, 0.9) 100%);
-      border: 1px solid rgba(74, 222, 128, 0.3);
-      border-radius: 1rem;
-      padding: 2rem;
-      backdrop-filter: blur(10px);
-    }
-
-    .input-field {
-      background: rgba(0, 0, 0, 0.5);
-      border: 1px solid rgba(74, 222, 128, 0.3);
-      color: white;
-      padding: 0.75rem 1rem;
-      border-radius: 0.5rem;
-      width: 100%;
-      transition: border-color 0.3s ease;
-      font-family: 'Space Grotesk', sans-serif;
-    }
-
-    .input-field:focus {
-      outline: none;
-      border-color: #4ade80;
-      box-shadow: 0 0 20px rgba(74, 222, 128, 0.2);
-    }
-
-    .textarea-field {
-      min-height: 150px;
-      resize: vertical;
-      font-family: 'Space Grotesk', sans-serif;
-    }
-
-    .optimize-button {
-      background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
-      color: black;
-      font-family: 'Orbitron', sans-serif;
-      font-weight: 900;
-      padding: 1rem 2rem;
-      border-radius: 0.5rem;
-      border: none;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      box-shadow: 0 0 30px rgba(74, 222, 128, 0.3);
-    }
-
-    .optimize-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 40px rgba(74, 222, 128, 0.5);
-    }
-
-    .optimize-button:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .result-box {
-      background: rgba(74, 222, 128, 0.05);
-      border: 1px solid rgba(74, 222, 128, 0.3);
-      border-radius: 0.5rem;
-      padding: 1.5rem;
-      margin-top: 1rem;
-      animation: slideIn 0.5s ease-out;
-    }
-
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .loading-spinner {
-      border: 3px solid rgba(74, 222, 128, 0.1);
-      border-top: 3px solid #4ade80;
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      animation: spin 1s linear infinite;
-      margin: 2rem auto;
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    .comparison-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-
-    @media (max-width: 768px) {
-      .comparison-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .copy-button {
-      background: transparent;
-      border: 1px solid rgba(74, 222, 128, 0.5);
-      color: #4ade80;
-      padding: 0.5rem 1rem;
-      border-radius: 0.25rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-    }
-
-    .copy-button:hover {
-      background: rgba(74, 222, 128, 0.1);
-      border-color: #4ade80;
-    }
   </style>
 </head>
 <body class="bg-black text-white">
 
-  <header class="fixed top-0 left-0 w-full bg-black/80 backdrop-blur z-40 border-b border-green-500/20">
+  <div id="intro-overlay">
+    <svg class="intro-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <!-- Head silhouette -->
+      <path d="M70 40 Q70 20, 90 20 L110 20 Q130 20, 130 40 L130 100 Q130 120, 120 130 L110 140 L90 140 L80 130 Q70 120, 70 100 Z" fill="#4ade80"/>
+      <!-- Circuit pattern in head -->
+      <circle cx="100" cy="70" r="8" fill="white"/>
+      <!-- Top connections -->
+      <circle cx="85" cy="50" r="5" fill="white"/>
+      <circle cx="100" cy="50" r="5" fill="white"/>
+      <circle cx="115" cy="50" r="5" fill="white"/>
+      <!-- Side connections -->
+      <circle cx="75" cy="70" r="5" fill="white"/>
+      <circle cx="125" cy="70" r="5" fill="white"/>
+      <!-- Bottom connections -->
+      <circle cx="85" cy="90" r="5" fill="white"/>
+      <circle cx="100" cy="90" r="5" fill="white"/>
+      <circle cx="115" cy="90" r="5" fill="white"/>
+      <!-- Lines connecting nodes -->
+      <line x1="100" y1="70" x2="85" y2="50" stroke="white" stroke-width="3"/>
+      <line x1="100" y1="70" x2="100" y2="50" stroke="white" stroke-width="3"/>
+      <line x1="100" y1="70" x2="115" y2="50" stroke="white" stroke-width="3"/>
+      <line x1="100" y1="70" x2="75" y2="70" stroke="white" stroke-width="3"/>
+      <line x1="100" y1="70" x2="125" y2="70" stroke="white" stroke-width="3"/>
+      <line x1="100" y1="70" x2="85" y2="90" stroke="white" stroke-width="3"/>
+      <line x1="100" y1="70" x2="100" y2="90" stroke="white" stroke-width="3"/>
+      <line x1="100" y1="70" x2="115" y2="90" stroke="white" stroke-width="3"/>
+    </svg>
+    <div class="intro-text">
+      <span class="human">HUMAN</span><span class="layers">LAYERS</span>
+    </div>
+  </div>
+
+  <header class="fixed top-0 left-0 w-full bg-transparent z-40">
     <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-      <a href="index.html" class="header-logo">
+      <div class="header-logo">
         <svg class="header-logo-icon" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-          <rect x="70" y="40" width="60" height="100" rx="30" fill="#4ade80"/>
+          <path d="M70 40 Q70 20, 90 20 L110 20 Q130 20, 130 40 L130 100 Q130 120, 120 130 L110 140 L90 140 L80 130 Q70 120, 70 100 Z" fill="#4ade80"/>
           <circle cx="100" cy="70" r="8" fill="white"/>
           <circle cx="85" cy="50" r="5" fill="white"/>
           <circle cx="100" cy="50" r="5" fill="white"/>
@@ -209,174 +199,125 @@
           <circle cx="85" cy="90" r="5" fill="white"/>
           <circle cx="100" cy="90" r="5" fill="white"/>
           <circle cx="115" cy="90" r="5" fill="white"/>
+          <line x1="100" y1="70" x2="85" y2="50" stroke="white" stroke-width="3"/>
+          <line x1="100" y1="70" x2="100" y2="50" stroke="white" stroke-width="3"/>
+          <line x1="100" y1="70" x2="115" y2="50" stroke="white" stroke-width="3"/>
+          <line x1="100" y1="70" x2="75" y2="70" stroke="white" stroke-width="3"/>
+          <line x1="100" y1="70" x2="125" y2="70" stroke="white" stroke-width="3"/>
+          <line x1="100" y1="70" x2="85" y2="90" stroke="white" stroke-width="3"/>
+          <line x1="100" y1="70" x2="100" y2="90" stroke="white" stroke-width="3"/>
+          <line x1="100" y1="70" x2="115" y2="90" stroke="white" stroke-width="3"/>
         </svg>
         <div class="header-logo-text">
           <span class="human">HUMAN</span><span class="layers">LAYERS</span>
         </div>
-      </a>
+      </div>
       <nav class="space-x-6 text-xs uppercase font-light tracking-wider">
         <a href="index.html" class="nav-link hover:text-green-400 transition-colors">Home</a>
         <a href="aboutus.html" class="nav-link hover:text-green-400 transition-colors">About</a>
-        <a href="prompt.html" class="nav-link hover:text-green-400 transition-colors text-green-400">Prompt Lab</a>
+        <a href="prompt.html" class="nav-link hover:text-green-400 transition-colors">Prompt Lab</a>
+        <a href="#" class="nav-link hover:text-green-400 transition-colors">Portfolio</a>
+        <a href="#" class="nav-link hover:text-green-400 transition-colors">Contact</a>
       </nav>
     </div>
   </header>
 
-  <main class="flex-grow pt-24 pb-12">
-    <div class="max-w-5xl mx-auto px-6">
-      <div class="text-center mb-12">
-        <h1 class="text-5xl font-orbitron font-bold text-green-400 mb-4">PROMPT LAB</h1>
-        <p class="text-xl text-gray-300 font-space max-w-2xl mx-auto">
-          Transform your prompts with AI-powered optimization. Get instant improvements and expert refinements.
+  <main id="main-content" class="min-h-screen relative flex items-center justify-center flex-grow">
+    <div id="full-video-background">
+      <video autoplay loop muted playsinline>
+        <source src="walking.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      <div class="overlay"></div>
+    </div>
+    
+    <div class="absolute inset-0 flex flex-col items-center justify-center z-10">
+      <div class="text-center p-4">
+        <p class="text-white text-shadow-strong tracking-tight">
+          <span id="static-intro-text" class="text-5xl md:text-7xl font-light font-space">Crafting prompts for </span>
+          <span id="dynamic-industry-span" class="text-5xl md:text-7xl font-extrabold uppercase font-orbitron text-green-400">
+          </span>
         </p>
       </div>
-
-      <div class="prompt-container mb-8">
-        <div class="mb-6">
-          <label class="block text-sm font-orbitron text-green-400 mb-2 uppercase tracking-wider">Your Original Prompt</label>
-          <textarea id="original-prompt" class="input-field textarea-field" placeholder="Enter your prompt here..."></textarea>
-        </div>
-
-        <div class="mb-6">
-          <label class="block text-sm font-orbitron text-green-400 mb-2 uppercase tracking-wider">Use Case (Optional)</label>
-          <select id="use-case" class="input-field">
-            <option value="">Select...</option>
-            <option value="content">Content Creation</option>
-            <option value="coding">Code Generation</option>
-            <option value="analysis">Data Analysis</option>
-            <option value="creative">Creative Writing</option>
-          </select>
-        </div>
-
-        <div class="mb-6">
-          <label class="block text-sm font-orbitron text-green-400 mb-2 uppercase tracking-wider">Target AI Model</label>
-          <select id="ai-model" class="input-field">
-            <option value="gemini">Gemini</option>
-          </select>
-        </div>
-
-        <button id="optimize-btn" class="optimize-button w-full">OPTIMIZE MY PROMPT</button>
-      </div>
-
-      <div id="loading" class="hidden">
-        <div class="loading-spinner"></div>
-        <p class="text-center text-green-400 font-orbitron">Optimizing your prompt...</p>
-      </div>
-
-      <div id="results" class="hidden">
-        <div class="comparison-grid">
-          <div class="result-box">
-            <h3 class="font-orbitron font-bold text-gray-400 uppercase text-sm">Original</h3>
-            <div id="original-result" class="text-gray-300 font-space"></div>
-          </div>
-          <div class="result-box">
-            <h3 class="font-orbitron font-bold text-green-400 uppercase text-sm">Optimized</h3>
-            <div id="optimized-result" class="text-white font-space"></div>
-          </div>
-        </div>
-        <div class="result-box mt-4">
-          <h3 class="font-orbitron font-bold text-green-400 mb-3 uppercase text-sm">Key Improvements</h3>
-          <ul id="improvements-list" class="space-y-2 text-gray-300"></ul>
-        </div>
-        <div class="result-box mt-4">
-          <h3 class="font-orbitron font-bold text-green-400 mb-3 uppercase text-sm">💡 Pro Tips</h3>
-          <div id="tips-list" class="text-gray-300 space-y-2"></div>
-        </div>
-      </div>
+      <button id="replay-button" class="mt-8 bg-transparent text-white text-sm font-normal font-orbitron hidden transition-colors duration-200 focus:outline-none flex items-center space-x-2 px-4 py-2 rounded-full border-2 border-green-500 hover:border-green-400 hover:bg-green-500/10">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 0020 13a8 8 0 00-15.356-2m0 0v5h.581m-.04-5.325a.75.75 0 111.04-1.135A10.001 10.001 0 0122 13c0 5.523-4.477 10-10 10S2 18.523 2 13a10.001 10.001 0 01.356-5.325m0 0a.75.75 0 11-1.04-1.135"></path>
+        </svg>
+        <span>REPLAY</span>
+      </button>
     </div>
   </main>
 
-  <footer class="w-full bg-black/60 backdrop-blur text-center py-4 text-sm text-gray-400 border-t border-green-500/20">
+  <footer class="w-full bg-black/60 backdrop-blur text-center py-4 text-sm text-gray-400 z-30 border-t border-green-500/20">
     <div class="font-orbitron text-xs tracking-wider">
-      ENGINEERED BY <span class="text-green-400 font-bold">HUMANLAYERS</span>
+      ENGINEERED WITH PRECISION BY <span class="text-green-400 font-bold">HUMANLAYERS</span>
     </div>
+    <span class="text-xs text-gray-500 mt-1 block">Trademark &trade; HumanLayers 2024. All rights reserved.</span>
   </footer>
 
   <script>
-    const optimizeBtn = document.getElementById("optimize-btn");
-    const originalPrompt = document.getElementById("original-prompt");
-    const loading = document.getElementById("loading");
-    const results = document.getElementById("results");
+    document.addEventListener('DOMContentLoaded', () => {
+      const introOverlay = document.getElementById('intro-overlay');
+      const introLogo = introOverlay.querySelector('.intro-logo'); 
+      const introText = introOverlay.querySelector('.intro-text');
 
-    optimizeBtn.addEventListener("click", async () => {
-      const prompt = originalPrompt.value.trim();
-      const useCase = document.getElementById("use-case").value;
-      const aiModel = document.getElementById("ai-model").value;
-
-      if (!prompt) {
-        alert("Please enter a prompt to optimize!");
-        return;
-      }
-
-      loading.classList.remove("hidden");
-      results.classList.add("hidden");
-      optimizeBtn.disabled = true;
-
-      try {
-        const response = await fetch(
-          "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=AIzaSyCAUrGpouxvhZpjz6okI3mqiBNH46_DJNE",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              contents: [
-                {
-                  parts: [
-                    {
-                      text: `You are a prompt engineering expert. Optimize this prompt for better AI responses:
-
-Original Prompt: "${prompt}"
-${useCase ? `Use Case: ${useCase}` : ""}
-${aiModel ? `Target Model: ${aiModel}` : ""}
-
-Provide:
-1. Optimized version of the prompt
-2. 3–5 specific improvements made
-3. 2–3 pro tips
-
-Format response as JSON:
-{
-  "optimized": "",
-  "improvements": [],
-  "tips": []
-}`,
-                    },
-                  ],
-                },
-              ],
-            }),
-          }
-        );
-
-        const data = await response.json();
-        const content = data.candidates?.[0]?.content?.parts?.[0]?.text;
-        const jsonMatch = content.match(/\{[\s\S]*\}/);
-        if (jsonMatch) {
-          const result = JSON.parse(jsonMatch[0]);
-          displayResults(prompt, result);
-        } else {
-          throw new Error("Invalid response format");
+      setTimeout(() => { 
+        introOverlay.classList.add('hidden'); 
+        if (introLogo) {
+          introLogo.style.transform = 'scale(10)'; 
+          introLogo.style.opacity = '0'; 
         }
-      } catch (error) {
-        console.error("Error:", error);
-        alert("An error occurred while optimizing your prompt.");
-      } finally {
-        loading.classList.add("hidden");
-        optimizeBtn.disabled = false;
-      }
-    });
+        if (introText) {
+          introText.style.transform = 'scale(10)'; 
+          introText.style.opacity = '0'; 
+        }
+      }, 1200); 
 
-    function displayResults(original, result) {
-      document.getElementById("original-result").textContent = original;
-      document.getElementById("optimized-result").textContent = result.optimized;
-      document.getElementById("improvements-list").innerHTML = result.improvements
-        .map((imp) => `<li>✓ ${imp}</li>`)
-        .join("");
-      document.getElementById("tips-list").innerHTML = result.tips
-        .map((tip) => `<p>${tip}</p>`)
-        .join("");
-      results.classList.remove("hidden");
-    }
+      introOverlay.addEventListener('transitionend', () => {
+        introOverlay.style.display = 'none';
+        document.body.style.overflowY = 'auto'; 
+      });
+
+      const dynamicIndustrySpanEl = document.getElementById('dynamic-industry-span');
+      const replayButtonEl = document.getElementById('replay-button'); 
+      
+      const industries = [
+        "AI ASSISTANTS",
+        "CHATBOTS",
+        "CONTENT CREATION",
+        "DATA ANALYSIS",
+        "CODE GENERATION",
+        "CUSTOMER SERVICE",
+        "RESEARCH",
+        "EDUCATION",
+        "MARKETING",
+        "YOUR VISION"
+      ];
+      let currentIndustryIndex = 0;
+      let intervalId; 
+
+      function updateIndustryText() {
+        const currentIndustry = industries[currentIndustryIndex];
+        dynamicIndustrySpanEl.textContent = currentIndustry;
+        
+        if (currentIndustryIndex === industries.length - 1) {
+          clearInterval(intervalId); 
+          replayButtonEl.classList.remove('hidden'); 
+        }
+
+        currentIndustryIndex = (currentIndustryIndex + 1) % industries.length;
+      }
+
+      replayButtonEl.addEventListener('click', () => {
+        replayButtonEl.classList.add('hidden'); 
+        currentIndustryIndex = 0; 
+        updateIndustryText(); 
+        intervalId = setInterval(updateIndustryText, 1500); 
+      });
+
+      updateIndustryText(); 
+      intervalId = setInterval(updateIndustryText, 1500); 
+    });
   </script>
 </body>
 </html>
