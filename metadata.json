@@ -1,0 +1,7 @@
+{
+  "name": "HumanLayers",
+  "description": "The missing human layer between raw AI and real humans. A futuristic landing page and prompt engineering lab.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
